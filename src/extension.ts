@@ -30,7 +30,12 @@ export function activate(context: vscode.ExtensionContext) {
 			inputBox.onDidAccept(async () => {
 				inputBox.dispose();
 
-				let stringsPath = await vscode.workspace.findFiles("**/strings.json");
+				let stringsPath = await vscode.workspace.findFiles("**/strings*.json");
+				if (stringsPath.length != 1) {
+					vscode.window.showErrorMessage('t-dot-svelte-vscode requires a single strings*.json file.');
+					return;
+				}
+
 				let strings = JSON.parse((await vscode.workspace.openTextDocument(stringsPath[0])).getText());
 
 				strings.strings[inputBox.value] = { translations: { "en": selectedText } };

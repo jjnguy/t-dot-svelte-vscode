@@ -41,7 +41,11 @@ function activate(context) {
         inputBox.prompt = "new key for translation";
         inputBox.onDidAccept(() => __awaiter(this, void 0, void 0, function* () {
             inputBox.dispose();
-            let stringsPath = yield vscode.workspace.findFiles("**/strings.json");
+            let stringsPath = yield vscode.workspace.findFiles("**/strings*.json");
+            if (stringsPath.length != 1) {
+                vscode.window.showErrorMessage('t-dot-svelte-vscode requires a single strings*.json file.');
+                return;
+            }
             let strings = JSON.parse((yield vscode.workspace.openTextDocument(stringsPath[0])).getText());
             strings.strings[inputBox.value] = { translations: { "en": selectedText } };
             yield vscode.workspace.fs.writeFile(stringsPath[0], new util_1.TextEncoder().encode(JSON.stringify(strings, null, '  ')));
