@@ -1,5 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import { TextEncoder } from 'util';
 import * as vscode from 'vscode';
 
 // this method is called when your extension is activated
@@ -14,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('t-dot-svelte-vscode.replaceWithTranslation',
-		() => {
+		async () => {
 			// The code you place here will be executed every time your command is executed
 
 			// Display a message box to the user
@@ -22,12 +23,20 @@ export function activate(context: vscode.ExtensionContext) {
 			const editor = vscode.window.activeTextEditor;
 			if (!editor) return;
 
-			let selection = editor.document.getText(editor.selection);
+			let selectedText = editor.document.getText(editor.selection);
 
 			let inputBox = vscode.window.createInputBox();
 			inputBox.prompt = "new key for translation";
-			inputBox.onDidAccept(() => {
+			inputBox.onDidAccept(async () => {
 				inputBox.dispose();
+
+				let stringsPath = await vscode.workspace.findFiles("**/strings.json");
+				let strings = JSON.parse((await vscode.workspace.openTextDocument(stringsPath[0])).getText());
+
+				strings.strings[inputBox.value] = { translations: { "en": selectedText } };
+
+				await vscode.workspace.fs.writeFile(stringsPath[0], new TextEncoder().encode(JSON.stringify(strings, null, '  ')));
+
 				editor.edit(edit => {
 					edit.replace(editor.selection, `<T key="${inputBox.value}" />`);
 				});
