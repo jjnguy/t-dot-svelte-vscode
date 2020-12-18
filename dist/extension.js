@@ -19,8 +19,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.deactivate = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-const util_1 = __webpack_require__(2);
-const vscode = __webpack_require__(1);
+const util_1 = __webpack_require__(1);
+const vscode = __webpack_require__(2);
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -42,8 +42,12 @@ function activate(context) {
         inputBox.onDidAccept(() => __awaiter(this, void 0, void 0, function* () {
             inputBox.dispose();
             let stringsPath = yield vscode.workspace.findFiles("**/strings*.json");
-            if (stringsPath.length != 1) {
-                vscode.window.showErrorMessage('t-dot-svelte-vscode requires a single strings*.json file.');
+            if (stringsPath.length > 1) {
+                vscode.window.showErrorMessage('t-dot-svelte-vscode found more than one strings.json file.');
+                return;
+            }
+            else if (stringsPath.length == 0) {
+                vscode.window.showErrorMessage('t-dot-svelte-vscode did not find a strings.json file.');
                 return;
             }
             let strings = JSON.parse((yield vscode.workspace.openTextDocument(stringsPath[0])).getText());
@@ -68,13 +72,13 @@ exports.deactivate = deactivate;
 /* 1 */
 /***/ ((module) => {
 
-module.exports = require("vscode");;
+module.exports = require("util");;
 
 /***/ }),
 /* 2 */
 /***/ ((module) => {
 
-module.exports = require("util");;
+module.exports = require("vscode");;
 
 /***/ })
 /******/ 	]);

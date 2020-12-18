@@ -2,7 +2,7 @@
 	"name": "t-dot-svelte-vscode",
 	"displayName": "t-dot-svelte-vscode",
 	"description": "Translate your app with ease",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
