@@ -1,1 +1,116 @@
-module.exports=(()=>{"use strict";var e={112:function(e,t,n){var o=this&&this.__awaiter||function(e,t,n,o){return new(n||(n=Promise))((function(i,s){function r(e){try{a(o.next(e))}catch(e){s(e)}}function c(e){try{a(o.throw(e))}catch(e){s(e)}}function a(e){var t;e.done?i(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(r,c)}a((o=o.apply(e,t||[])).next())}))};Object.defineProperty(t,"__esModule",{value:!0}),t.deactivate=t.activate=void 0;const i=n(669),s=n(549);t.activate=function(e){console.log('Congratulations, your extension "t-dot-svelte-vscode" is now active!');let t=s.commands.registerCommand("t-dot-svelte-vscode.replaceWithTranslation",(()=>o(this,void 0,void 0,(function*(){const e=s.window.activeTextEditor;if(!e)return;let t=e.document.getText(e.selection),n=s.window.createInputBox();n.prompt="new key for translation",n.onDidAccept((()=>o(this,void 0,void 0,(function*(){n.dispose();let o=yield s.workspace.findFiles("**/strings*.json");if(1!=o.length)return void s.window.showErrorMessage("t-dot-svelte-vscode requires a single strings*.json file.");let r=JSON.parse((yield s.workspace.openTextDocument(o[0])).getText());r.strings[n.value]={translations:{en:t}},yield s.workspace.fs.writeFile(o[0],(new i.TextEncoder).encode(JSON.stringify(r,null,"  "))),e.edit((t=>{t.replace(e.selection,`<T key="${n.value}" />`)}))})))),n.onDidHide((e=>n.dispose())),n.show()}))));e.subscriptions.push(t)},t.deactivate=function(){}},669:e=>{e.exports=require("util")},549:e=>{e.exports=require("vscode")}},t={};return function n(o){if(t[o])return t[o].exports;var i=t[o]={exports:{}};return e[o].call(i.exports,i,i.exports,n),i.exports}(112)})();
+module.exports =
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ([
+/* 0 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deactivate = exports.activate = void 0;
+// The module 'vscode' contains the VS Code extensibility API
+// Import the module and reference it with the alias vscode in your code below
+const util_1 = __webpack_require__(1);
+const vscode = __webpack_require__(2);
+// this method is called when your extension is activated
+// your extension is activated the very first time the command is executed
+function activate(context) {
+    // Use the console to output diagnostic information (console.log) and errors (console.error)
+    // This line of code will only be executed once when your extension is activated
+    console.log('Congratulations, your extension "t-dot-svelte-vscode" is now active!');
+    // The command has been defined in the package.json file
+    // Now provide the implementation of the command with registerCommand
+    // The commandId parameter must match the command field in package.json
+    let disposable = vscode.commands.registerCommand('t-dot-svelte-vscode.replaceWithTranslation', () => __awaiter(this, void 0, void 0, function* () {
+        // The code you place here will be executed every time your command is executed
+        // Display a message box to the user
+        const editor = vscode.window.activeTextEditor;
+        if (!editor)
+            return;
+        let selectedText = editor.document.getText(editor.selection);
+        let inputBox = vscode.window.createInputBox();
+        inputBox.prompt = "new key for translation";
+        inputBox.onDidAccept(() => __awaiter(this, void 0, void 0, function* () {
+            inputBox.dispose();
+            let stringsPath = yield vscode.workspace.findFiles("**/strings*.json");
+            if (stringsPath.length > 1) {
+                vscode.window.showErrorMessage('t-dot-svelte-vscode found more than one strings.json file.');
+                return;
+            }
+            else if (stringsPath.length == 0) {
+                vscode.window.showErrorMessage('t-dot-svelte-vscode did not find a strings.json file.');
+                return;
+            }
+            let strings = JSON.parse((yield vscode.workspace.openTextDocument(stringsPath[0])).getText());
+            strings.strings[inputBox.value] = { translations: { "en": selectedText } };
+            yield vscode.workspace.fs.writeFile(stringsPath[0], new util_1.TextEncoder().encode(JSON.stringify(strings, null, '  ')));
+            editor.edit(edit => {
+                edit.replace(editor.selection, `<T key="${inputBox.value}" />`);
+            });
+        }));
+        inputBox.onDidHide(_ => inputBox.dispose());
+        inputBox.show();
+    }));
+    context.subscriptions.push(disposable);
+}
+exports.activate = activate;
+// this method is called when your extension is deactivated
+function deactivate() { }
+exports.deactivate = deactivate;
+
+
+/***/ }),
+/* 1 */
+/***/ ((module) => {
+
+module.exports = require("util");;
+
+/***/ }),
+/* 2 */
+/***/ ((module) => {
+
+module.exports = require("vscode");;
+
+/***/ })
+/******/ 	]);
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })()
+;
+//# sourceMappingURL=extension.js.map

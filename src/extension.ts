@@ -31,8 +31,11 @@ export function activate(context: vscode.ExtensionContext) {
 				inputBox.dispose();
 
 				let stringsPath = await vscode.workspace.findFiles("**/strings*.json");
-				if (stringsPath.length != 1) {
-					vscode.window.showErrorMessage('t-dot-svelte-vscode requires a single strings*.json file.');
+				if (stringsPath.length > 1) {
+					vscode.window.showErrorMessage('t-dot-svelte-vscode found more than one strings.json file.');
+					return;
+				} else if (stringsPath.length == 0) {
+					vscode.window.showErrorMessage('t-dot-svelte-vscode did not find a strings.json file.');
 					return;
 				}
 
