@@ -139,6 +139,7 @@ class UntranslatedText extends vscode.TreeItem {
 		super(rawText.substring(0, Math.min(15, rawText.length)) + (rawText.length < 15 ? '' : '...'), vscode.TreeItemCollapsibleState.None);
 		this.tooltip = rawText;
 		this.description = this.label + '';
+		this.contextValue = "t-dot-svelte-vscode.autoReplaceWithTranslation";
 	}
 
 }

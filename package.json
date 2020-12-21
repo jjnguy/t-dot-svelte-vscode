@@ -29,6 +29,14 @@
 					"name": "Untranslated Text"
 				}
 			]
+		},
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "t-dot-svelte-vscode.replaceWithTranslation",
+					"when": "view == t-dot-svelte-vscode.rawTextView"
+				}
+			]
 		}
 	},
 	"scripts": {
